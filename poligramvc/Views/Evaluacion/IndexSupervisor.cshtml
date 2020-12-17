@@ -1,0 +1,132 @@
+﻿@model IEnumerable<poligramvc.Models.Consultas>
+
+@{
+    ViewBag.Title = "Index Supervisor";
+}
+
+@using (Html.BeginForm("IndexSupervisor", "Evaluacion", FormMethod.Post))
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Busqueda Evaluados
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                @Html.TextBox("cadena", "", new { @class = "form-control", placeholder = "Paterno Materno Nombre - Codigo" })
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </div>
+    </div>
+}
+
+@if(Model != null)
+{
+    <div class="ibox-content">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover dataTables-example">
+                <thead>
+                    <th>IdH</th>
+                    <th>IdE</th>
+                    <th>Serial</th>
+                    <th>Evaluado</th>
+                    <th>Evaluacion</th>
+                    <th>F Pol</th>
+                    <th>F Cus</th>
+                    <th>Dif</th>
+                    <th>Dependencia</th>
+                    <th>Est</th>
+                    <th>Dx</th>
+                    <th>Vinc</th>
+                    <th>Foto</th>
+                    <th>Acciones</th>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.IdH)</td>
+                            <td>@Html.DisplayFor(modelItem => item.IdE)</td>
+                            <td>@Html.DisplayFor(modelItem => item.serial)</td>
+                            <td>@Html.DisplayFor(modelItem => item.evaluado)</td>
+                            <td>@Html.DisplayFor(modelItem => item.evaluacion)</td>
+                            <td>@Html.DisplayFor(modelItem => item.fechapol)</td>
+                            <td>@Html.DisplayFor(modelItem => item.fEntCus)</td>
+                            <td>@Html.DisplayFor(modelItem => item.diferenciada)</td>
+                            <td>@Html.DisplayFor(modelItem => item.dependencia)</td>
+                            <td>@Html.DisplayFor(modelItem => item.estatus)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Dx)</td>
+                            <td>@Html.DisplayFor(modelItem => item.hayVinculo)</td>
+                            @*@if (@item.Hay == 0)
+                            {
+                                <td>En espera</td>
+                            }
+                            else
+                            {
+                                <td>Iniciada</td>
+                            }*@
+                            <td>
+                                <img width="100" height="120" src="@Url.Action("convertirImagen", "Evaluacion", new { _IdH = item.IdH })" />
+                                @*<img src="@Url.Content("~/ImgEval/"+@item.IdH+".jpg")" width="100" height="120" />*@
+                            </td>
+                            <td style="text-align:center">
+                                @if (item.Hay == 0)
+                                {
+                                    <p>
+                                        @Html.ActionLink("Nueva Evaluacion", "NuevaEvaluacionPoligrafia", new { pIdH = item.IdH, pIdHP = item.idhp }, htmlAttributes: new { @class = "btn btn-block btn-outline btn-primary btn-xs" })
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p>
+                                        @Html.ActionLink("Editar Evaluacion", "EditarEvaluacion", new { pIdH = item.IdH, pIdHP = item.idhp }, htmlAttributes: new { @class = "btn btn-block btn-outline btn-primary btn-xs" })
+                                    </p>
+                                    <p>
+                                        <a class="popup btn btn-block btn-outline btn-primary btn-xs" href="../Impresiones/printPoligrafia?sIdH=@item.IdH&sIdHP=@item.idhp" target="_blank">Imprimir Reporte</a>
+                                    </p>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+}
+
+@section scripts
+{
+    <script src="~/Content/js/plugins/dataTables/datatables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.dataTables-example').DataTable({
+                pageLength: 25,
+                responsive: true,
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    { extend: 'copy' },
+                    { extend: 'csv' },
+                    { extend: 'excel', title: 'ExampleFile' },
+                    { extend: 'pdf', title: 'ExampleFile' },
+
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                                    .addClass('compact')
+                                    .css('font-size', 'inherit');
+                        }
+                    }
+                ]
+
+            });
+
+        });
+    </script>
+}

@@ -1,0 +1,56 @@
+﻿@model IEnumerable<poligramvc.Models.Vinculos>
+@{
+    ViewBag.Title = "IndexVinculoPoligrafia";
+}
+
+@using (Html.BeginForm("IndexVinculoPoligrafia", "Vinculo"))
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Busqueda Vinculador - Vinculado - Alias
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                @Html.TextBox("cadena", "", new { @class = "form-control", placeholder = "Vinculador - Vinculado - Alias" })
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model != null)
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover dataTables-example">
+            <thead>
+                <tr>
+                    <th>VINCULADOR</th>
+                    <th>NOMBRE REFERIDO</th>
+                    <th>PATERNO REFERIDO</th>
+                    <th>MATERNO REFERIDO</th>
+                    <th>GENERO</th>
+                    <th>ALIAS</th>
+                    <th>MUNICIPIO</th>
+                    <th>REFERENCIA</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.vinculador)</td>
+                        <td>@Html.DisplayFor(modelItem => item.nombreReferido)</td>
+                        <td>@Html.DisplayFor(modelItem => item.paternoReferido)</td>
+                        <td>@Html.DisplayFor(modelItem => item.maternoReferido)</td>
+                        <td>@Html.DisplayFor(modelItem => item.genero)</td>
+                        <td>@Html.DisplayFor(modelItem => item.alias)</td>
+                        <td>@Html.DisplayFor(modelItem => item.municipio)</td>
+                        <td>@Html.DisplayFor(modelItem => item.referencia)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

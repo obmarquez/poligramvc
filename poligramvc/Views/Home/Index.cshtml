@@ -1,0 +1,152 @@
+﻿@model IEnumerable<poligramvc.Models.Consultas>
+
+@*@{
+        ViewBag.Title = "Home Page";
+    }*@
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <h2>Tablero de Avances</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">Inicio</a>
+            </li>
+            <li class="active">
+                <strong>Panel de Control</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content">
+
+    <div class="row">
+
+        <div class="col-lg-6 col-md-6 col-sm-6">
+
+            <div class="ibox float-e-margins">
+
+                <div class="ibox-title">
+
+                    <h5>Grafica Evaluaciones Pendientes por tipo Evaluación <small> 2020 </small></h5>
+
+                </div>
+
+                <div class="ibox-content">
+
+                    <div>
+
+                        <canvas id="barChart" height="140"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6">
+
+            <div class="ibox float-e-margins">
+
+                <div class="ibox-title">
+
+                    <h5>Grafica por Tipo Evaluacion <small> 2020 </small></h5>
+
+                </div>
+
+                <div class="ibox-content">
+
+                    <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section scripts{
+
+    <script src="~/Content/js/plugins/chartJs/Chart.min.js"></script>
+    <script src="~/scriptsHighcharts/highcharts.js"></script>
+    <script src="~/scriptsHighcharts/exporting.js"></script>
+
+    <script type="text/javascript">
+
+         var myArray = [];
+        var par = [];
+        @foreach (var d in Model)
+            {
+            @:par = ['@Html.DisplayFor(modelItem => d.name)',@Html.DisplayFor(modelItem => d.Cantidad)];
+            @:myArray.push(par);
+        }
+
+        //-------------------------------------------------------------------------------------- Grafica de barras
+        $(function () {
+
+            var barData = {
+                labels: ["Nuevo Ingreso", "Permanencia", "Promocion"],
+                datasets: [
+                    {
+                        label: "Estatus",
+                        backgroundColor: 'rgba(220, 220, 220, 0.5)',
+                        pointBorderColor: "#fff",
+                        data: [@ViewBag.nuevoIngreso, @ViewBag.permanencia, @ViewBag.promocion]
+                    }
+                ]
+            };
+
+            var barOptions = {
+                responsive: true
+            };
+
+
+            var ctx2 = document.getElementById("barChart").getContext("2d");
+            new Chart(ctx2, { type: 'bar', data: barData, options: barOptions });
+
+        });
+
+        //-------------------------------------------------------------------------------------- Grafica Pastel praa directora en otro menú
+        Highcharts.chart('container', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Gráfica Evaluaciones Pendientes'
+            },
+            subtitle: {
+                text: "Estatus"
+            },
+            tooltip: {
+                pointFormat: '{series.name}: {point.y} (<b>{point.percentage:.1f}%</b>)'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.y}'
+                    }
+                }
+            },
+            series: [{
+                name: 'Est',
+                colorByPoint: true,
+                data: myArray
+            }]
+        });
+
+    </script>
+
+}

@@ -1,0 +1,717 @@
+﻿@model poligramvc.Models.EvaluacionPol
+
+@{
+    ViewBag.Title = "Nueva Evaluacion Poligráfica";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="gray-bg form-horizontal">
+
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-12">
+                <h2>Detalle de la Evaluación</h2>
+            </div>
+        </div>
+
+        <div class="wrapper wrapper-content animated fadeIn">
+
+            <div class="row">
+
+                <div class="col-lg-12">
+
+                    <div class="tabs-container">
+
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#tabObservaciones"> Observaciones</a></li>
+                            <li class=""><a data-toggle="tab" href="#tabEvaluacion"> Inf. Lab - Admisiones</a></li>
+                            <li class=""><a data-toggle="tab" href="#tabNotas"> Observaciones - Notas</a></li>
+                            <li class=""><a data-toggle="tab" href="#tabSintesis"> Sint. Técnico - Análisis Técnico</a></li>
+                            <li class=""><a data-toggle="tab" href="#tabObsPol"> Obs Pol - Dx - Casillas</a></li>
+                            @*<li class=""><a data-toggle="tab" href="#tabDx"> Dx's - Casillas Verificación</a></li>*@
+                        </ul>
+
+                        <div class="tab-content">
+
+                            @*Observaciones públicas*@
+                            <div id="tabObservaciones" class="tab-pane active">
+
+                                @Html.Hidden("idObservacionPendiente")
+
+                                <div class="panel-body">
+
+                                    <div class="form-group">
+
+                                        @*valores ocultos*@
+                                        @Html.HiddenFor(model => model.idhistorico, new { id = "idhistorico", Value = ViewBag.sIdH })
+                                        @Html.HiddenFor(model => model.idevalpol, new { id = "idhp", Value = ViewBag.sIdHP })
+
+                                        <input id="OBSERVA" name="OBSERVA" type="button" class="btn btn-danger demo2" value="Nueva Observación" onclick="capturaObservacion(idhistorico)" />
+
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="table-responsive">
+
+                                            <table class="table table-striped table-bordered table-hover dataTables-example">
+
+                                                <thead>
+
+                                                    @*<th>Evaluado</th>*@
+
+                                                <th>ID</th>
+
+                                                <th>Observación Pública</th>
+
+                                                <th>Fecha Registro</th>
+
+                                                <th>Recomendacion</th>
+
+                                                <th>Por Responder</th>
+
+                                                </thead>
+
+                                                <tbody>
+
+                                                    @foreach (var obs in ViewData["obser"] as IEnumerable<poligramvc.Models.Consultas>)
+                                                    {
+                                                        <tr>
+
+                                                            <td>@obs.idO</td>
+
+                                                            <td>@obs.observacionpublica</td>
+
+                                                            <td>@obs.fecha</td>
+
+                                                            <td>@obs.recomendacion</td>
+
+                                                            <td>
+                                                                @if (obs.recomendacion == "")
+                                                                {
+                                                                    <input id="OBSERVARES" name="OBSERVARES" type="button" class="btn btn-success demo2" value="Responder" onclick="capturaObservacionRespuesta(@obs.idO)" />
+                                                                }
+                                                            </td>
+
+                                                        </tr>
+                                                    }
+
+                                                </tbody>
+
+                                            </table>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div id="tabEvaluacion" class="tab-pane">
+
+                                <div class="wrapper wrapper-content animated fadeInRight">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="ibox float-e-margins">
+                                                <div class="ibox-title">
+                                                    <h5>Datos generales <small>Fecha de evaluación - Escolaridad - Carrera</small></h5>
+                                                </div>
+                                                <div class="ibox-content">
+                                                    <div class="row">
+                                                        <div class="col-lg-4 col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="col-sm-4 control-label">Fecha Evaluacion</label>
+                                                                <div class="col-sm-8">
+                                                                    @Html.TextBoxFor(model => model.fEvalpol, new { @class = "form-control", placeholder = "Ingrese la fecha de la Evaluacion" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="col-sm-4 control-label">Escolaridad</label>
+                                                                <div class="col-sm-8">
+                                                                    @Html.TextBoxFor(model => model.cEscolaridad, new { @class = "form-control", placeholder = "Seleccione una escolaridad" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="col-sm-4 control-label">Carrera</label>
+                                                                <div class="col-sm-8">
+                                                                    @Html.TextBoxFor(model => model.cCarrera, new { @class = "form-control", placeholder = "Indique una carrera" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="ibox-content">
+                                                <div class="row">
+
+                                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                                        <p class="font-bold">
+                                                            Información Laboral <small>(Máximo 3,600 caracteres)</small>
+                                                        </p>
+                                                        @Html.TextAreaFor(model => model.cLaboral, new { @class = "form-control", rows = 14 })
+                                                    </div>
+
+                                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                                        <p class="font-bold">
+                                                            Admisiones <small>(Máximo 8,000 caracteres)</small>
+                                                        </p>
+                                                        @Html.TextAreaFor(model => model.cAdmisiones, new { @class = "form-control", rows = 14 })
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div id="tabNotas" class="tab-pane">
+                                <div class="row">
+                                    <div class="ibox">
+                                        <div class="ibox-title">
+                                            <h5>Observaciones - Notas <small>Nuevo formato</small></h5>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="row">
+
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <p class="font-bold">
+                                                    Observaciones <small>(Máximo 8,000 caracteres)</small>
+                                                </p>
+                                                @Html.TextAreaFor(model => model.cObservaciones, new { @class = "form-control", rows = 16 })
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <p class="font-bold">
+                                                    Notas <small>(Máximo 1,800 caracteres)</small>
+                                                </p>
+                                                @Html.TextAreaFor(model => model.cNota, new { @class = "form-control", rows = 16 })
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="tabSintesis" class="tab-pane">
+                                <div class="row">
+                                    <div class="ibox">
+                                        <div class="ibox-title">
+                                            <h5>Sintesis Técnico - Análisis Técnico <small>Nuevo formato</small></h5>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="row">
+
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <p class="font-bold">
+                                                    Sintésis Técnico <small>(Máximo 800 caracteres)</small>
+                                                </p>
+                                                @Html.TextAreaFor(model => model.cSintesis, new { @class = "form-control", rows = 16 })
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <p class="font-bold">
+                                                    Análisis Técnico <small>(Máximo 900 caracteres)</small>
+                                                </p>
+                                                @Html.TextAreaFor(model => model.cAnalisis, new { @class = "form-control", rows = 16 })
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="tabObsPol" class="tab-pane">
+
+                                <div class="row">
+                                    <div class="ibox">
+                                        <div class="ibox-title">
+                                            Observaciones del Area - DX - Casillas de Verificación <small>Nuevo formato</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="ibox-content">
+                                        <div class="row">
+
+                                            <div>
+                                                <p class="font-bold">
+                                                    Observación Poligráfica <small>(Máximo 2,000 caracteres)</small>
+                                                </p>
+                                                @Html.TextAreaFor(model => model.cObservapoligrafia, new { @class = "form-control", rows = 10 })
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="ibox-content">
+                                        <div class="row">
+                                            <div class="panel panel-success">
+                                                <div class="panel-heading">
+                                                    Diagnósitoco (Dx) - DXT - Supervisor
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="col-lg-4 col-md-4 col-sm-4">
+                                                        <p class="font-bold">
+                                                            Diagnóstico (Dx)
+                                                        </p>
+                                                        @Html.DropDownListFor(model => model.cDiagnostico, new SelectList(
+                                                            new List<object> {
+                                                                new { value = "R", text = "R" },
+                                                                new { value = "RR", text = "RR" },
+                                                                new { value = "NR", text = "NR" },
+                                                                new { value = "REEX", text = "REEX" },
+                                                                new { value = "R/O", text = "R/O" },
+                                                                new { value = "S/D", text = "S/D" },
+                                                                new { value = "DT", text = "DT" },
+                                                                new { value = "INC", text = "INC" },
+                                                                new { value = "A", text = "A" },
+                                                                new { value = "AS", text = "AS" },
+                                                                new { value = "AR", text = "AR" },
+                                                                new { value = "NA", text = "NA" },
+                                                                new { value = "RB", text = "RB" },
+                                                                new { value = "RM", text = "RM" },
+                                                                new { value = "RA", text = "RA" },
+                                                                new { value = "No cubre el perfil", text = "No cubre el perfil" }
+                                                            }, "value", "text", 0), new { @id = "cDiagnostico", @class = "form-control" })
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-4 col-sm-4">
+                                                        <p class="font-bold">
+                                                            Dxt
+                                                        </p>
+                                                        @Html.DropDownListFor(model => model.cDxt, new SelectList(
+                                                            new List<object> {
+                                                                new { value = "DI", text = "DI" },
+                                                                new { value = "NDI", text = "NDI" },
+                                                                new { value = "INC", text = "INC" }
+                                                            }, "value", "text", 0), new { @id = "cDxt", @class = "form-control" })
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-4 col-sm-4">
+                                                        <p class="font-bold">
+                                                            Supervisor
+                                                        </p>
+                                                        @Html.DropDownListFor(model => model.cCalidad, ViewData["super"] as SelectList, new { @id = "cCalidad", @class = "form-control" })
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="ibox-content">
+                                        <div class="row">
+
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                                <div class="panel panel-success">
+                                                    <div class="panel-heading">
+                                                        Notas NDI
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div>
+                                                            @Html.CheckBoxFor(model => model.bNdiporinformacion, new { @class = "i-checks", @id = "bNdiporinformacion" }) <label class="control-label"> Por información</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                                <div class="panel panel-success">
+                                                    <div class="panel-heading">
+                                                        Notas DI
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div>
+                                                            <div>@Html.CheckBoxFor(model => model.bDiilegales, new { @class = "i-checks", @id = "bDiilegales" }) <label class="control-label"> Drogas ilegales</label></div>
+                                                            <div>@Html.CheckBoxFor(model => model.bDiconfidencia, new { @class = "i-checks", @id = "bDiconfidencia" }) <label class="control-label"> Información Confidencial</label></div>
+                                                            <div>@Html.CheckBoxFor(model => model.bDiilicitos, new { @class = "i-checks", @id = "bDiilicitos" }) <label class="control-label"> Beneficios Ilícitos</label></div>
+                                                            <div>@Html.CheckBoxFor(model => model.bDiorganizada, new { @class = "i-checks", @id = "bDiorganizada" }) <label class="control-label"> Delincuencia Organizada</label></div>
+                                                            <div>@Html.CheckBoxFor(model => model.bDidelitos, new { @class = "i-checks", @id = "bDidelitos" }) <label class="control-label"> Delitos</label></div>
+                                                            <div>@Html.CheckBoxFor(model => model.bDialterar, new { @class = "i-checks", @id = "bDialterar" }) <label class="control-label"> Alterar Resultados / Otros</label></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                                <div class="panel panel-success">
+                                                    <div class="panel-heading">
+                                                        Admisiones
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div>
+                                                            <div>@Html.CheckBoxFor(model => model.bAdmilegales, new { @class = "i-checks", @id = "bAdmilegales" }) <label class="control-label"> Drogas ilegales</label></div>
+                                                            <div>@Html.CheckBoxFor(model => model.bAdmconfidencial, new { @class = "i-checks", @id = "bAdmconfidencial" }) <label class="control-label"> Información Confidencial</label></div>
+                                                            <div>@Html.CheckBoxFor(model => model.bAdmilicitos, new { @class = "i-checks", @id = "bAdmilicitos" }) <label class="control-label"> Beneficios Ilícitos</label></div>
+                                                            <div>@Html.CheckBoxFor(model => model.bAdmorganizada, new { @class = "i-checks", @id = "bAdmorganizada" }) <label class="control-label"> Delincuencia Organizada</label></div>
+                                                            <div>@Html.CheckBoxFor(model => model.bAdmdelitos, new { @class = "i-checks", @id = "bAdmdelitos" }) <label class="control-label"> Delitos</label></div>
+                                                            <div>@Html.CheckBoxFor(model => model.bAdmalterar, new { @class = "i-checks", @id = "bAdmalterar" }) <label class="control-label"> Alterar Resultados / Otros</label></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="ibox-content">
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                                <div class="panel panel-success">
+                                                    <div class="panel-heading">
+                                                        Sin Diagnóstico
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div>@Html.CheckBoxFor(model => model.bCardiacos, new { @class = "i-checks", @id = "bCardiacos" }) <label class="control-label"> Problemas cardiacos</label></div>
+                                                        <div>@Html.CheckBoxFor(model => model.bEpilepsia, new { @class = "i-checks", @id = "bEpilepsia" }) <label class="control-label"> Epilepsia</label></div>
+                                                        <div>@Html.CheckBoxFor(model => model.bEmbarazo, new { @class = "i-checks", @id = "bEmbarazo" }) <label class="control-label"> Embarazo</label></div>
+                                                        <div>@Html.CheckBoxFor(model => model.bOtros, new { @class = "i-checks", @id = "bOtros" }) <label class="control-label"> Otros</label></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                                <div class="panel panel-success">
+                                                    <div class="panel-heading">
+                                                        Definida por
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div>@Html.CheckBoxFor(model => model.bEmpriricosimplificado, new { @class = "i-checks", @id = "bEmpriricosimplificado" }) <label class="control-label"> Empírico Simplificado</label></div>
+                                                        <div>@Html.CheckBoxFor(model => model.bCuartografico, new { @class = "i-checks", @id = "bCuartografico" }) <label class="control-label"> Cuarto Gráfico</label></div>
+                                                        <div>@Html.CheckBoxFor(model => model.bAnalisisglobal, new { @class = "i-checks", @id = "bAnalisisglobal" }) <label class="control-label"> Análisis Global</label></div>
+                                                        <div>@Html.CheckBoxFor(model => model.bOss3, new { @class = "i-checks", @id = "bOss3" }) <label class="control-label"> OSS3</label></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                                <div class="panel panel-success">
+                                                    <div class="panel-heading">
+                                                        Técnica Aplicada y Sistema de Calificación
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div>@Html.CheckBoxFor(model => model.bMgqtv1, new { @class = "i-checks", @id = "bMgqtv1" }) <label class="control-label"> MGQTV-1</label></div>
+                                                        <div>@Html.CheckBoxFor(model => model.bTrespuntos, new { @class = "i-checks", @id = "bTrespuntos" }) <label class="control-label"> Escala de Tres Puntos</label></div>
+                                                        <div>@Html.CheckBoxFor(model => model.bSietepuntos, new { @class = "i-checks", @id = "bSietepuntos" }) <label class="control-label"> Escala de Siete Puntos</label></div>
+                                                        <div>@Html.CheckBoxFor(model => model.bDlst, new { @class = "i-checks", @id = "bDlst" }) <label class="control-label"> DLST</label></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="hr-line-dashed"></div>
+
+                                            <button type="button" class="btn btn-primary" onclick="nuevaEvaluacionPol();">Guardar Evaluacion</button>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+
+<div class="modal inmodal" id="modalObservacion" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content animated bounceInRight">
+
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+
+                @*<i class="fa fa-address-card modal-icon"></i>*@
+
+                <h4 class="modal-title">Nueva Observación Pública</h4>
+
+                <small class="font-bold">Captura de Información</small>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="form-group">
+
+                    <label>Observación</label>
+
+                    @Html.TextArea("observacion", new { @id = "observacion", @class = "form-control", rows = 4 })
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                @Html.Hidden("idhNuevaObservacion")
+
+                <button type="button" class="btn btn-white" data-dismiss="modal">Cerrar</button>
+
+                <button type="button" class="btn btn-primary" onclick="grabarNuevaObservacion()">Grabar Observación Pública</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal inmodal" id="modalObservacionRespuesta" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content animated bounceInRight">
+
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+
+                @*<i class="fa fa-address-card modal-icon"></i>*@
+
+                <h4 class="modal-title">Respuesta a observaciones públicas</h4>
+
+                <small class="font-bold">Captura de Información</small>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="form-group">
+
+                    <label>Observación</label>
+
+                    @Html.TextArea("observacionForanea", new { @id = "observacionForanea", @class = "form-control", rows = 4, @readonly = "readonly" })
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Respuesta</label>
+
+                    @Html.TextArea("respuesta", new { @id = "respuesta", @class = "form-control", rows = 4 })
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-white" data-dismiss="modal">Cerrar</button>
+
+                <button type="button" class="btn btn-primary" onclick="responderObservacion()">Grabar Observación Pública</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section scripts
+{
+    @*css*@
+    <link href="~/Content/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    @*js*@
+    <link href="~/Content/css/plugins/iCheck/custom.css" rel="stylesheet" />
+    <script src="~/Content/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="~/Content/js/plugins/sweetalert/sweetalert.min.js"></script>
+
+    <script language="javascript">
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+
+        //$('.mensaje').click(function () {
+        //    swal({
+        //        title: "Good job!",
+        //        text: "You clicked the button!",
+        //        type: "success"
+        //    });
+        //});
+
+        function capturaObservacion(idhistorico) {
+            $('#idhNuevaObservacion').val(idhistorico.value);
+            //alert(idhistorico.value);
+            $('#modalObservacion').modal('show');
+        }
+
+        function limpiarRespuesta() {
+            $('#respuesta').val('');
+        }
+
+        function capturaObservacionRespuesta(idObsPend) {
+
+            limpiarRespuesta();
+
+            $('#idObservacionPendiente').val(idObsPend);
+
+            //alert(idObsPend);
+
+            $('#modalObservacionRespuesta').modal('show');
+
+            getObservacionPendiente(idObsPend);
+        }
+
+        function getObservacionPendiente(idObsPendiente) {
+
+            //alert(idObsPendiente);
+
+            var observaciones = { id: idObsPendiente };
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: "{observaciones:" + JSON.stringify(observaciones) + "}",
+                url: "/Observacion/GetDataObservacionPendiente",
+                success: function (data) {
+                    $("#observacionForanea").val(data.observacionpublica);
+                },
+                error: function (result) {
+                    alert("Algo se envio mal de observaciones");
+                }
+            });
+        }
+
+        function responderObservacion() {
+
+            var _idObservacionResponder = $('#idObservacionPendiente').val();
+            var _respuesta = $('#respuesta').val();
+
+            //alert("idObs " + _idObservacionResponder + ' Respuesta '+ _respuesta);
+
+            var url = "@Url.Action("js_responder_observacion", "Observacion")";
+            var data = { p_idObs: _idObservacionResponder, p_respuesta: _respuesta };
+            $.post(url, data).done(function (data) {
+                if (data == "Ok") {
+                    $('#modalObservacionRespuesta').modal('hide');
+                    swal({
+                        title: "Respuesta Agregada Satisfactoeriamente",
+                        text: "Click para continuar y F5 para actualizar",
+                        type: "success"
+                    });
+                }
+            }).fail(manejarErrorAjax);
+        }
+
+        function grabarNuevaObservacion() {
+
+            var _idhNuevaObservacion = $('#idhNuevaObservacion').val();
+            var _observacion = $('#observacion').val();
+            //alert('IdH: ' + _idhNuevaObservacion + ' Observacion: ' + _observacion);
+
+            var url = "@Url.Action("js_agrega_observacion", "Observacion")";
+            var data = { p_idHistorico: _idhNuevaObservacion, p_observacionpublica: _observacion };
+            $.post(url, data).done(function (data) {
+                if (data == "Ok") {
+                    $('#modalObservacion').modal('hide');
+                    swal({
+                        title: "Observación Agregada Satisfactoeriamente",
+                        text: "Click para continuar y F5 para actualizar",
+                        type: "success"
+                    });
+                }
+            }).fail(manejarErrorAjax);
+        }
+
+        function nuevaEvaluacionPol() {
+            var _idhistorico = $("#idhistorico").val();
+            var _fEvalpol = $("#fEvalpol").val();
+            var _cEscolaridad = $("#cEscolaridad").val();
+            var _cCarrera = $("#cCarrera").val();
+            var _cLaboral = $("#cLaboral").val();
+            var _cAdmisiones = $("#cAdmisiones").val();
+            var _cObservaciones = $("#cObservaciones").val();
+            var _cNota = $("#cNota").val();
+            var _cSintesis = $("#cSintesis").val();
+            var _cAnalisis = $("#cAnalisis").val();
+            var _cObservapoligrafia = $("#cObservapoligrafia").val();
+            var _cDiagnostico = $("#cDiagnostico").val();
+            var _cDxt = $("#cDxt").val();
+            var _cCalidad = $("#cCalidad").val();
+            var _bNdiporinformacion = $("#bNdiporinformacion").prop('checked') ? true : false;
+            var _bDiilegales = $("#bDiilegales").prop('checked') ? true : false;
+            var _bDiconfidencia = $("#bDiconfidencia").prop('checked') ? true : false;
+            var _bDiilicitos = $("#bDiilicitos").prop('checked') ? true : false;
+            var _bDiorganizada = $("#bDiorganizada").prop('checked') ? true : false;
+            var _bDidelitos = $("#bDidelitos").prop('checked') ? true : false;
+            var _bDialterar = $("#bDialterar").prop('checked') ? true : false;
+            var _bAdmilegales = $("#bAdmilegales").prop('checked') ? true : false;
+            var _bAdmconfidencial = $("#bAdmconfidencial").prop('checked') ? true : false;
+            var _bAdmilicitos = $("#bAdmilicitos").prop('checked') ? true : false;
+            var _bAdmorganizada = $("#bAdmorganizada").prop('checked') ? true : false;
+            var _bAdmdelitos = $("#bAdmdelitos").prop('checked') ? true : false;
+            var _bAdmalterar = $("#bAdmalterar").prop('checked') ? true : false;
+            var _bCardiacos = $("#bCardiacos").prop('checked') ? true : false;
+            var _bEpilepsia = $("#bEpilepsia").prop('checked') ? true : false;
+            var _bEmbarazo = $("#bEmbarazo").prop('checked') ? true : false;
+            var _bOtros = $("#bOtros").prop('checked') ? true : false;
+            var _bEmpriricosimplificado = $("#bEmpriricosimplificado").prop('checked') ? true : false;
+            var _bCuartografico = $("#bCuartografico").prop('checked') ? true : false;
+            var _bAnalisisglobal = $("#bAnalisisglobal").prop('checked') ? true : false;
+            var _bOss3 = $("#bOss3").prop('checked') ? true : false;
+            var _bMgqtv1 = $("#bMgqtv1").prop('checked') ? true : false;
+            var _bTrespuntos = $("#bTrespuntos").prop('checked') ? true : false;
+            var _bSietepuntos = $("#bSietepuntos").prop('checked') ? true : false;
+            var _bDlst = $("#bDlst").prop('checked') ? true : false;
+            var _idhp = $("#idhp").val();
+            var _accion = 1;
+
+            //alert("IDH: " + _idhistorico + " | FEVALPOL: " + _fEvalpol + " | ESCOLARIDAD: " + _cEscolaridad + " | CARRERA: " + _cCarrera + " | LABORAL: " + _cLaboral + " | ADMISIONES " + _cAdmisiones + " | OBSERVACIONES: " + _cObservaciones + " | NOTAS: " + _cNota + " | SINTESIS: " + _cSintesis + " | ANALISIS: " + _cAnalisis + " | OBSERVACION POLIGRAFICA: " + _cObservapoligrafia + " | DIAGNOSTICO: " + _cDiagnostico + " | DXT: " + _cDxt + " | SUPERVISOR: " + _cCalidad + " | NDI POR INFORMACION: " + _bNdiporinformacion + " DI Drogas ilegales " + _bDiilegales + " | DI INFORMACION CONFIDENCIAL : " + _bDiconfidencia + " | DI BENEFICIOS ILICITOS : " + _bDiilicitos + " | DI DELINCUENCIA ORGANIZADA : " + _bDiorganizada + " | DI DELITOS " + _bDidelitos + " | DI ALTERAR " + _bDialterar + " | ADM DROGRAS ILEGALES : " + _bAdmilegales + " | ADM INFORMACION CONFIDENCIAL : " + _bAdmconfidencial + " | ADM BENEFICIOS ILICITOS : " + _bAdmilicitos + " | ADM DELINCUENCIA ORGANIZADA : " + _bAdmorganizada + " | ADM DELITOS : " + _bAdmdelitos + " | ADM ALTERAR: " + _bAdmalterar + " | PROBLEMAS CARDIACOS : " + _bCardiacos + " | EPILEPSIA : " + _bEpilepsia + " | EMBARAZO : " + _bEmbarazo + " | OTROS : " + _bOtros + " | EMPRICO SIMPLIFICADO : " + _bEmpriricosimplificado + " | CUARTO GRAFICO : " + _bCuartografico + " | ANALISIS GLOBAL : " + _bAnalisisglobal + " | OSS3 : " + _bOss3 + " | MGQTV1 : " + _bMgqtv1 + " | TRES PUNTOS : " + _bTrespuntos + " | SIETE PUNTOS : " + _bSietepuntos + " | DLST : " + _bDlst + " | IDHP : " + _idhp + " | ACCION : " + _accion);
+
+            var url = "@Url.Action("AddUpdInvestigacionPoligrafica", "Evaluacion")";
+            var data = { idhistorico: _idhistorico, fEvalpol: _fEvalpol, cEscolaridad: _cEscolaridad, cCarrera: _cCarrera, cLaboral: _cLaboral, cAdmisiones: _cAdmisiones, cObservaciones: _cObservaciones, cNota: _cNota, cSintesis: _cSintesis, cAnalisis: _cAnalisis, cObservapoligrafia: _cObservapoligrafia, cDiagnostico: _cDiagnostico, cDxt: _cDxt, cCalidad: _cCalidad, bNdiporinformacion: _bNdiporinformacion, bDiilegales: _bDiilegales, bDiconfidencia: _bDiconfidencia, bDiilicitos: _bDiilicitos, bDiorganizada: _bDiorganizada, bDidelitos: _bDidelitos, bDialterar: _bDialterar, bAdmilegales: _bAdmilegales, bAdmconfidencial: _bAdmconfidencial, bAdmilicitos: _bAdmilicitos, bAdmorganizada: _bAdmorganizada, bAdmdelitos: _bAdmdelitos, bAdmalterar: _bAdmalterar, bCardiacos: _bCardiacos, bEpilepsia: _bEpilepsia, bEmbarazo: _bEmbarazo, bOtros: _bOtros, bEmpriricosimplificado: _bEmpriricosimplificado, bCuartografico: _bCuartografico, bAnalisisglobal: _bAnalisisglobal, bOss3: _bOss3, bMgqtv1: _bMgqtv1, bTrespuntos: _bTrespuntos, bSietepuntos: _bSietepuntos, bDlst: _bDlst, idevalpol: _idhp, accion: _accion };
+            $.post(url, data).done(function (data) {
+                if (data == "Ok") {
+
+                    //swal({
+                    //    title: "Ivestigacion Psicologica Agregada",
+                    //    text: "Satisfactoriamente",
+                    //    type: "success"
+                    //});
+
+                    location.href = '@Url.Action("PolNuevo", "Message")';
+                    @*location.href = '@Url.Action("IndexEvaluacionPsi", "EvaluacionPsi")';*@
+                }
+            }).fail(manejarErrorAjax);
+        }
+
+        function manejarErrorAjax(err) {
+            console.log(err.responseText);
+        }
+
+    </script>
+}

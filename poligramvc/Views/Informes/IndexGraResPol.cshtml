@@ -1,0 +1,151 @@
+﻿@model IEnumerable<poligramvc.Models.Consultas>
+
+@{
+    ViewBag.Title = "IndexGraResPol";
+}
+
+@using (Html.BeginForm("IndexGraResPol", "Informes", FormMethod.Post))
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Seleccione un Psicologo
+        </div>
+        <div class="panel-body">
+            <div class="row form-group">
+                <div class="col-md-8">
+                    @Html.DropDownList("poligrafista", (IEnumerable<SelectListItem>)ViewData["investigador"], new { @id = "poligrafista", @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    <div id="data_1">
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="fecha01" name="fecha01" class="form-control" placeholder="Fecha Inicio">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div id="data_1">
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="fecha02" name="fecha02" class="form-control" placeholder="Fecha Final">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="wrapper wrapper-content">
+
+    <div class="row">
+
+        <div class="col-lg-6 col-md-6 col-sm-6">
+
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6">
+
+            <div class="ibox float-e-margins">
+
+                <div class="ibox-title">
+
+                    <h5>Grafica por Resultados <small> 2020 </small></h5>
+
+                </div>
+
+                <div class="ibox-content">
+
+                    <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section scripts
+{
+    @*-- css --*@
+    <link href="~/Content/css/plugins/datapicker/datepicker3.css" rel="stylesheet" />
+
+    @*-- js --*@
+    <script src="~/Content/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="~/Content/js/plugins/chartJs/Chart.min.js"></script>
+    <script src="~/scriptsHighcharts/highcharts.js"></script>
+    <script src="~/scriptsHighcharts/exporting.js"></script>
+
+    <script type="text/javascript">
+         var myArray = [];
+        var par = [];
+        @foreach (var d in Model)
+            {
+            @:par = ['@Html.DisplayFor(modelItem => d.name)',@Html.DisplayFor(modelItem => d.Cantidad)];
+            @:myArray.push(par);
+        }
+        //alert(myArray);
+
+            //----------------------------------------------------------
+            $(document).ready(function () {
+                $('.i-checks').iCheck({
+                    checkboxClass: 'icheckbox_square-green',
+                    radioClass: 'iradio_square-green',
+                });
+            });
+
+            $('#data_1 .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "dd/mm/yyyy"
+            });
+            //----------------------------------------------------------
+
+        //-------------------------------------------------------------------------------------- Grafica Pastel praa directora en otro menú
+        Highcharts.chart('container', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Gráfica Evaluaciones Pendientes'
+            },
+            subtitle: {
+                text: "Estatus"
+            },
+            tooltip: {
+                pointFormat: '{series.name}: {point.y} (<b>{point.percentage:.1f}%</b>)'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.y}'
+                    }
+                }
+            },
+            series: [{
+                name: 'Est',
+                colorByPoint: true,
+                data: myArray
+            }]
+        });
+
+    </script>
+
+}

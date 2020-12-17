@@ -1,0 +1,297 @@
+﻿@model IEnumerable<poligramvc.Models.Consultas>
+
+@{
+    ViewBag.Title = "Index Poligrafista";
+}
+
+<h2>Evaluacion en Proceso</h2>
+
+<div class="ibox-title">
+    <h5>Evaluaciones en Proceso</h5>
+    <div class="ibox-tools">
+        <a class="collapse-link">
+            <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+</div>
+
+<div class="ibox-content">
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover dataTables-example">
+            <thead>
+            <th>IdH</th>
+            @*<th>IdE</th>*@
+            <th>IdHP</th>
+            <th>Evaluado</th>
+            <th>Evaluacion</th>
+            <th>Fecha</th>
+            <th>Dependencia</th>
+            <th>Vinc.</th> 
+            <th>Foto</th>
+            <th>Acciones</th>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td style="vertical-align:middle">@Html.DisplayFor(modelItem => item.IdH)</td>
+                    @*<td>@Html.DisplayFor(modelItem => item.IdE)</td>*@
+                    <td style="vertical-align:middle">@Html.DisplayFor(modelItem => item.idhp)</td>
+                    <td style="vertical-align:middle">@Html.DisplayFor(modelItem => item.evaluado)</td>
+                    <td style="vertical-align:middle">@Html.DisplayFor(modelItem => item.evaluacion)</td>
+                    <td style="vertical-align:middle">@Html.DisplayFor(modelItem => item.fecha)</td>
+                    <td style="vertical-align:middle">@Html.DisplayFor(modelItem => item.dependencia)</td>
+                    <td style="vertical-align:middle">@Html.DisplayFor(modelItem => item.hayVinculo)</td>
+                    <td style="vertical-align:middle">
+                        <img width="100" height="120" src="@Url.Action("convertirImagen", "Evaluacion", new { _IdH = item.IdH })" />
+                        @*<img src="@Url.Content("~/ImgEval/"+@item.IdH+".jpg")" width="100" height="120" />*@
+                    </td>
+                    <td style="text-align:center">
+                        @if (item.Hay == 0)
+                        {
+                            <p>
+                                @Html.ActionLink("Nueva Evaluacion", "NuevaEvaluacionPoligrafia", new { pIdH = item.IdH, pIdHP = item.idhp }, htmlAttributes: new { @class = "btn btn-block btn-outline btn-primary btn-xs" })
+                            </p>
+                        }
+                        else
+                        {
+                            <p>
+                                @Html.ActionLink("Editar Evaluacion", "EditarEvaluacion", new { pIdH = item.IdH, pIdHP = item.idhp }, htmlAttributes: new { @class = "btn btn-block btn-outline btn-primary btn-xs" })
+                            </p>
+                            <p>
+                                <a class="popup btn btn-block btn-outline btn-primary btn-xs" href="../Impresiones/printPoligrafia?sIdH=@item.IdH&sIdHP=@item.idhp" target="_blank">Imprimir Reporte</a>
+                            </p>
+                        }
+                        @if (item.indice > 0)
+                        {
+                            <p>
+                                @Html.ActionLink("Editar Indice", "IndiceEditarPoligrafia", new { sIdH = item.IdH, sIdHP = item.idhp }, htmlAttributes: new { @class = "btn btn-block btn-outline btn-primary btn-xs" })
+                            </p>
+                            <p>
+                                <a class="popup btn btn-block btn-outline btn-primary btn-xs" href="../Impresiones/printIndice?idRep=@item.indice" target="_blank">Imprimir Indice</a>
+                            </p>
+                        }
+                        else
+                        {
+                            <p>
+                                @Html.ActionLink("Agregar Indice", "IndicePoligrafia", new { sIdH = item.IdH, sIdHP = item.idhp }, htmlAttributes: new { @class = "btn btn-block btn-outline btn-primary btn-xs" })
+                            </p>
+                        }
+                        <p>
+                            <a class="popup btn btn-block btn-outline btn-primary btn-xs" href="../Impresiones/printRepAntecedentes?sIdH=@item.IdH" target="_blank">Reporte Antecedentes</a>
+                        </p>
+                        <p>
+                            @Html.Hidden("idHistoricoIndex")
+                            <input id="red" name="red" type="button" class="btn btn-block btn-outline btn-primary btn-xs" value="Red Vínculos" onclick="red(@item.IdH)" />
+                        </p>
+                    </td>
+                </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal inmodal" id="myModalRed" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content animated bounceInRight">
+
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+
+                <h4 class="modal-title">Red de Vínculos</h4>
+
+                <small class="font-bold">Captura de Información</small>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="form-group">
+
+                    <label>Nombre del Referido</label>
+
+                    @Html.TextBox("nombreReferido", "", new { @id = "nombreReferido", @class = "form-control", placeholder = "Nombre del Referido" })
+
+                    @*@Html.DropDownList("idpsi", ViewData["psicologos"] as SelectList, new { @id = "idpsi", @class = "form-control" })*@
+                </div>
+
+                <div class="form-group">
+
+                    <label>Paterno del Referido</label>
+
+                    @Html.TextBox("paternoReferido", "", new { @id = "paternoReferido", @class = "form-control", placeholder = "Paterno del Referido" })
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Materno del Referido</label>
+
+                    @Html.TextBox("maternoReferido", "", new { @id = "maternoReferido", @class = "form-control", placeholder = "Materno del Referido" })
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Género</label>
+
+                    @Html.DropDownList("genero", new List<SelectListItem>
+               {
+                   new SelectListItem {Text = "Hombre", Value = "Hombre" },
+                   new SelectListItem {Text = "Mujer", Value = "Mujer" }
+               }, "Seleccione un Genero", new { @class = "form-control" })
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Tipo de Relación</label>
+
+                    @Html.TextBox("relacion", "", new { @id = "relacion", @class = "form-control", placeholder = "Indique la relación" })
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Alias / Moto / Apodo</label>
+
+                    @Html.TextBox("alias", "", new { @id = "alias", @class = "form-control", placeholder = "Indique el Alias - Mote - Apodo" })
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Coorporacion</label>
+
+                    @Html.TextBox("coorporacion", "", new { @id = "coorporacion", @class = "form-control", placeholder = "Indique la Coorporación" })
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Municipio</label>
+
+                    @Html.DropDownList("municipio", ViewData["municipios"] as SelectList, new { @id = "municipio", @class = "form-control" })
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Referencia</label>
+
+                    @Html.TextArea("referencia", new { @id = "referencia", @class = "form-control", rows = 3 })
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-white" data-dismiss="modal">Cerrar</button>
+
+                <button type="button" class="btn btn-primary" onclick="redGrabar();">Grabar Red</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section scripts
+{
+    <script src="~/Content/js/plugins/dataTables/datatables.min.js"></script>
+    <script src="~/Scripts/js-evaluacion.js"></script>
+
+    <script language="javascript">
+        $(document).ready(function () {
+            $('.dataTables-example').DataTable({
+                pageLength: 25,
+                responsive: true,
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    { extend: 'copy' },
+                    { extend: 'csv' },
+                    { extend: 'excel', title: 'ExampleFile' },
+                    { extend: 'pdf', title: 'ExampleFile' },
+
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                ]
+
+            });
+
+        });
+
+        function limpiarRed() {
+            $('#nombreReferido').val('');
+            $('#paternoReferido').val('');
+            $('#maternoReferido').val('');
+            $('#relacion').val('');
+            $('#alias').val('');
+            $('#coorporacion').val('');
+            $('#referencia').val('');
+        }
+
+        function red(idHistorico) {
+
+            limpiarRed();
+
+            $('#idHistoricoIndex').val(idHistorico);
+            $('#nombreReferido_Modal').val();
+
+            $('#myModalRed').modal('show');
+        }
+
+        function redGrabar() {
+
+            var _idHistoricoIndex = $("#idHistoricoIndex").val();
+            var _nombreReferido_Modal = $("#nombreReferido").val();
+            var _paternoReferido_Modal = $("#paternoReferido").val();
+            var _maternoReferido_Modal = $("#maternoReferido").val();
+            var _genero_Modal = $("#genero").val();
+            var _relacion_Modal = $("#relacion").val();
+            var _alias_Modal = $("#alias").val();
+            var _coorporacion_Modal = $("#coorporacion").val();
+            var _municipio_Modal = $("#municipio").val();
+            var _referencia_Modal = $("#referencia").val();
+
+            //alert('IDH: '+_idHistoricoIndex+' Name: '+_nombreReferido_Modal+' Paterno: '+_paternoReferido_Modal+' Materno: '+_maternoReferido_Modal+' Genero: '+_genero_Modal+' Relación: '+_relacion_Modal+ ' Alias: '+_alias_Modal+' Coorp: '+_coorporacion_Modal+' Municipio: '+_municipio_Modal+' Referencia: '+_referencia_Modal);
+
+            var url = "@Url.Action("js_red_vinculos", "Evaluacion")";
+            var data = { p_idHistoricoIndex: _idHistoricoIndex, p_nombreReferido_Modal: _nombreReferido_Modal, p_paternoReferido_Modal: _paternoReferido_Modal, p_maternoReferido_Modal: _maternoReferido_Modal, p_genero_Modal: _genero_Modal, p_relacion_Modal: _relacion_Modal, p_alias_Modal: _alias_Modal, p_coorporacion_Modal: _coorporacion_Modal, p_municipio_Modal: _municipio_Modal, p_referencia_Modal: _referencia_Modal };
+            $.post(url, data).done(function (data) {
+                if (data == "Ok") {
+
+                    $('#myModalRed').modal('hide');
+
+                    swal({
+                        title: "Referencia de Red Vinculo Agregada",
+                        text: "Satisfactoriamente",
+                        type: "success"
+                    });
+                }
+            }).fail(manejarErrorAjax);
+        }
+
+        function manejarErrorAjax(err) {
+            console.log(err.responseText);
+        }
+
+    </script>
+}

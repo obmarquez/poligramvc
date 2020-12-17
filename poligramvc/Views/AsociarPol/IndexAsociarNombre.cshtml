@@ -1,0 +1,183 @@
+﻿@model IEnumerable<poligramvc.Models.Consultas>
+@{
+    ViewBag.Title = "IndexAsociarNombre";
+}
+
+@using (Html.BeginForm("IndexAsociarNombre", "AsociarPol", FormMethod.Post))
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Busqueda Evaluados para Asociar
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                @Html.TextBox("nombre", "", new { @class = "form-control", placeholder = "Paterno Materno Nombre - Codigo" })
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model != null)
+{
+    <div class="ibox-content">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover dataTables-example">
+                <thead>
+                <th>IdH</th>
+                <th>IdE</th>
+                <th>Serial</th>
+                <th>Evaluado</th>
+                <th>Evaluacion</th>
+                <th>F Pol</th>
+                <th>Dependencia</th>
+                @*<th>Est</th>*@
+                <th>Vinc</th>
+                <th>AP</th>
+                <th>Foto</th>
+                <th>Acciones</th>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.IdH)</td>
+                            <td>@Html.DisplayFor(modelItem => item.IdE)</td>
+                            <td>@Html.DisplayFor(modelItem => item.serial)</td>
+                            <td>@Html.DisplayFor(modelItem => item.evaluado)</td>
+                            <td>@Html.DisplayFor(modelItem => item.evaluacion)</td>
+                            <td>@Html.DisplayFor(modelItem => item.fechapol)</td>
+                            <td>@Html.DisplayFor(modelItem => item.dependencia)</td>
+                            @*<td>@Html.DisplayFor(modelItem => item.estatus)</td>*@
+                            <td>@Html.DisplayFor(modelItem => item.hayVinculo)</td>
+                            <td>@Html.DisplayFor(modelItem => item.idpol)</td>
+                            @*@if (@item.Hay == 0)
+                    {
+                        <td>En espera</td>
+                    }
+                    else
+                    {
+                        <td>Iniciada</td>
+                    }*@
+                            <td>
+                                <img width="100" height="120" src="@Url.Action("convertirImagen", "Evaluacion", new { _IdH = item.IdH })" />
+                                @*<img src="@Url.Content("~/ImgEval/"+@item.IdH+".jpg")" width="100" height="120" />*@
+                            </td>
+                            <td style="text-align:center">
+                                @if (item.Hay == 0)
+                                {
+                                    @Html.Hidden("IdHN")
+                                    <input id="ASO" name="ASO" type="button" class="btn btn-primary demo2" value="ASOCIAR" onclick="editar(@item.IdH)" />
+                                }
+                                else
+                                {
+                                    <p>Evaluacion Asociada</p>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+    <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <i class="fa fa-refresh modal-icon"></i>
+                    <h4 class="modal-title">Asociación de Poligrafista</h4>
+                    <small class="font-bold">Para expedientes que aún no han sido iniciados</small>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Elija un poligrafista</label>
+                        @Html.DropDownList("idpol", ViewData["poligrafistas"] as SelectList, new { @id = "idpol", @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label>Elija un Cubículo</label>
+                        @Html.DropDownList("opcionCubo", (IEnumerable<SelectListItem>)ViewBag.losCubos, "Seleccione un Cubo", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="asociar();">Asociar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section scripts
+{
+    @*CSS*@
+    <link href="~/Content/css/plugins/datapicker/datepicker3.css" rel="stylesheet" />
+    <link href="~/Content/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    @*JS*@
+    <script src="~/Content/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="~/Content/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/js-asociar.js"></script>
+    <script src="~/Content/js/plugins/dataTables/datatables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.dataTables-example').DataTable({
+                pageLength: 25,
+                responsive: true,
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    { extend: 'copy' },
+                    { extend: 'csv' },
+                    { extend: 'excel', title: 'ExampleFile' },
+                    { extend: 'pdf', title: 'ExampleFile' },
+
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                ]
+
+            });
+
+        });
+
+        function asociar() {
+            var _idh = $("#IdHN").val();
+            var _poli = $("#idpol").val();
+            var _sup = "";
+            var _cub = $("#opcionCubo").val();
+
+            //alert(_idh + ' ' + _poli);
+
+            $.ajaxSetup({ async: true });
+
+            $.post("js_asociar", { p_idHistorico: _idh, p_idEvaluador: _poli, p_idSupervisor: _sup, p_nCubiculo: _cub }, function (data) {
+                if (data == "SESION_EXPIRED") { showReiniciarSesion(); }
+                else if (data == "Ok") {
+                    $('#myModal').modal('hide');
+                    swal({
+                        title: "Evaluado Asociado / Actualizado",
+                        text: "F5 Actualizar ventana",
+                        type: "success"
+                    });
+                }
+                else { showMessage("Ocurrio un error, intente de nuevo.", "#msgBandeja", "danger", "warning"); }
+            })
+                .fail(function (result) {
+                    showMessage("Ocurrio un error:" + result.statusText + ", intente de nuevo. ", "#msgBandeja", "danger", "warning");
+                });
+        }
+    </script>
+}

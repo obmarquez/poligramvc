@@ -1,0 +1,217 @@
+﻿@model IEnumerable<poligramvc.Models.Consultas>
+@*@model poligramvc.Models.EvaluacionPol*@
+
+@{
+    ViewBag.Title = "Totalizado";
+}
+
+@using (Html.BeginForm("Totalizado", "Informes", FormMethod.Post))
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Seleccione una Fecha (Basado en Fecha de Evaluación)
+        </div>
+        <div class="panel-body">
+            <div class="row form-group">
+                <div class="col-md-3">
+                    <div id="data_1">
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="fecha01" name="fecha01" class="form-control" placeholder="Fecha Inicio">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div id="data_1">
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" id="fecha02" name="fecha02" class="form-control" placeholder="Fecha Final">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    @Html.DropDownList("opcionTotalizado", (IEnumerable<SelectListItem>)ViewBag.lasOpciones, "Seleccione una opción", new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </div>
+    </div>
+}
+
+@if(Model != null)
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover dataTables-example">
+            <thead>
+                <th>AP</th>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+                <th>5</th>
+                <th>6</th>
+                <th>7</th>
+                <th>8</th>
+                <th>9</th>
+                <th>10</th>
+                <th>11</th>
+                <th>12</th>
+                <th>13</th>
+                <th>14</th>
+                <th>15</th>
+                <th>16</th>
+                <th>17</th>
+                <th>18</th>
+                <th>19</th>
+                <th>20</th>
+                <th>21</th>
+                <th>22</th>
+                <th>23</th>
+                <th>24</th>
+                <th>25</th>
+                <th>26</th>
+            </thead>
+            <tbody>
+                @foreach(var item in Model)
+                {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.idpol)</td>
+                    <td>@Html.DisplayFor(modelItem => item.uno)</td>
+                    <td>@Html.DisplayFor(modelItem => item.dos)</td>
+                    <td>@Html.DisplayFor(modelItem => item.tres)</td>
+                    <td>@Html.DisplayFor(modelItem => item.cuatro)</td>
+                    <td>@Html.DisplayFor(modelItem => item.cinco)</td>
+                    <td>@Html.DisplayFor(modelItem => item.seis)</td>
+                    <td>@Html.DisplayFor(modelItem => item.siete)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ocho)</td>
+                    <td>@Html.DisplayFor(modelItem => item.nueve)</td>
+                    <td>@Html.DisplayFor(modelItem => item.diez)</td>
+                    <td>@Html.DisplayFor(modelItem => item.once)</td>
+                    <td>@Html.DisplayFor(modelItem => item.doce)</td>
+                    <td>@Html.DisplayFor(modelItem => item.trece)</td>
+                    <td>@Html.DisplayFor(modelItem => item.catorce)</td>
+                    <td>@Html.DisplayFor(modelItem => item.quince)</td>
+                    <td>@Html.DisplayFor(modelItem => item.dieciseis)</td>
+                    <td>@Html.DisplayFor(modelItem => item.diecisiete)</td>
+                    <td>@Html.DisplayFor(modelItem => item.dieciocho)</td>
+                    <td>@Html.DisplayFor(modelItem => item.diecinueve)</td>
+                    <td>@Html.DisplayFor(modelItem => item.veinte)</td>
+                    <td>@Html.DisplayFor(modelItem => item.veintiuno)</td>
+                    <td>@Html.DisplayFor(modelItem => item.veintidos)</td>
+                    <td>@Html.DisplayFor(modelItem => item.veintitres)</td>
+                    <td>@Html.DisplayFor(modelItem => item.veinticuatro)</td>
+                    <td>@Html.DisplayFor(modelItem => item.veinticinco)</td>
+                    <td>@Html.DisplayFor(modelItem => item.veintiseis)</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <br />
+
+    <div class="ibox-content">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                Nomenclatura de la Tabla de Totalizados
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div><label>1.- NDI/NSR</label></div>
+                        <div><label>2.- INC/ESS</label></div>
+                        <div><label>3.- 4GFO</label></div>
+                        <div><label>4.- AG</label></div>
+                        <div><label>5.- 7PTOS</label></div>
+                        <div><label>6.- INC/OSS3</label></div>
+                        <div><label>7.- CONTEXTO</label></div>
+                        <div><label>8.- TECNICA</label></div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div><label> 9.- TOTAL DI</label></div>
+                        <div><label>10.- TOT ADM A</label></div>
+                        <div><label>11.- TOT ADM B</label></div>
+                        <div><label>12.- TOT ADM C</label></div>
+                        <div><label>13.- TOT INC A</label></div>
+                        <div><label>14.- TOT INC B</label></div>
+                        <div><label>15.- DIISR Del</label></div>
+                        <div><label>16.- DIISR Dro</label></div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div><label>17.- DIISR DO</label></div>
+                        <div><label>18.- DIISR Inf</label></div>
+                        <div><label>19.- DIISR Ben</label></div>
+                        <div><label>20.- DIISR Alt</label></div>
+                        <div><label>21.- Adm Del</label></div>
+                        <div><label>22.- Adm Dro</label></div>
+                        <div><label>23.- Adm DO</label></div>
+                        <div><label>24.- Adm Inf</label></div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div><label>25.- Adm Ben</label></div>
+                        <div><label>26.- Adm Alt</label></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts
+{
+    @*-- css --*@
+    <link href="~/Content/css/plugins/datapicker/datepicker3.css" rel="stylesheet" />
+
+    @*-- js --*@
+    <script src="~/Content/js/plugins/dataTables/datatables.min.js"></script>
+    <script src="~/Content/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/js/plugins/iCheck/icheck.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+
+            $('.dataTables-example').DataTable({
+                pageLength: 25,
+                responsive: true,
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    { extend: 'copy' },
+                    { extend: 'csv' },
+                    { extend: 'excel', title: 'ExampleFile' },
+                    { extend: 'pdf', title: 'ExampleFile' },
+
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                ]
+
+            });
+
+        });
+
+        $('#data_1 .input-group.date').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true,
+            format: "dd/mm/yyyy"
+        });
+
+    </script>
+
+}

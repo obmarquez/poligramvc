@@ -1,0 +1,165 @@
+﻿@model poligramvc.Models.Indice
+
+@{
+    ViewBag.Title = "Indice del Expediente Poligráfico";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="gray-bg form-horizontal">
+
+        <div class="row">
+
+            <div class="col-lg-12">
+
+                <div class="ibox">
+
+                    <div class="ibox-title">
+
+                        <h5>Indice del Expediente Poligrafico</h5>
+
+                    </div>
+
+                    <div class="ibox-content">
+
+                        <div class="row">
+
+                            @Html.HiddenFor(model => model.idhistorico, new { id = "idhistorico", Value = ViewBag.sIdh })
+                            @Html.HiddenFor(model => model.idevalpol, new { id = "idevalpol", Value = ViewBag.sIdHP })
+
+                            <div class="form-group">
+                                <label class="col-sm-8 control-label" style="text-align:left">Reporte: </label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.nreporte, new { @class = "form-control hojas", @id = "nreporte", @Value = "1", @type = "number" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-8 control-label" style="text-align:left">Datos generales / Autorización de temas: </label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.datosgenerales, new { @class = "form-control hojas", @id = "datosgenerales", @Value = "1", @type = "number" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-8 control-label" style="text-align:left">Carta autorización / Manifestación de protección de datos: </label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.carta, new { @class = "form-control hojas", @id = "carta", @Value = "1", @type = "number" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-8 control-label" style="text-align:left">Antecedentes personales / Comentario: </label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.personales, new { @class = "form-control hojas", @id = "personales", @Value = "1", @type = "number" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-8 control-label" style="text-align:left">Entrevista: </label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.entrevista, new { @class = "form-control hojas", @id = "entrevista", @Value = "3", @type = "number" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-8 control-label" style="text-align:left">Preguntas: </label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.preguntas, new { @class = "form-control hojas", @id = "preguntas", @Value = "1", @type = "number" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-8 control-label" style="text-align:left">Análisis numéricos: </label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.analisis, new { @class = "form-control hojas", @id = "analisis", @Value = "1", @type = "number" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-8 control-label" style="text-align:left">Gráficos: </label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.graficos, new { @class = "form-control hojas hojas", @id = "graficos", @Value = "12", @type = "number" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-8 control-label" style="text-align:left">Identificación oficial: </label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.oficial, new { @class = "form-control hojas", @id = "oficial", @Value = "1", @type = "number" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-8 control-label" style="text-align:left">Indique que identificación es: </label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.identificacion, new { @class = "form-control", @id = "identificacion", @Value = "-" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-8 control-label" style="text-align:left">Otros: </label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.otros_cantidad, new { @class = "form-control hojas", @id = "otros_cantidad", @Value = "0", @type = "number" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-8 control-label" style="text-align:left">Indique cuál es el otro documento: </label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.otros_texto, new { @class = "form-control", @id = "otros_texto", @Value = "-" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-8 control-label" style="text-align:left">Total de hojas: </label>
+                                <div class="col-sm-4">
+                                    @*@Html.TextBox("totalHojas", "0", new { @class = "form-control" })*@
+                                    @Html.TextBox("totalHojas", "", new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary mensaje" type="submit">Guardar</button>
+                                    @*<button type="button" class="btn btn-primary" onclick="insertar_evaluacion();">Guardar Evaluacion</button>*@
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        var totalFojas = 0;
+
+        $(".hojas").keyup(function (event) {
+            $(".hojas").each(function (index, el) {
+                var valorHojaActual = Number($(this).val());
+
+                totalFojas += valorHojaActual;
+            })
+
+            //alert(totalFojas);
+            $("#totalHojas").val(totalFojas);
+
+            totalFojas = 0;
+        })
+    </script>
+}

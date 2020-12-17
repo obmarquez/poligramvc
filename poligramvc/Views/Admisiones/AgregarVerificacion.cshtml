@@ -1,0 +1,183 @@
+﻿@model poligramvc.Models.Admision
+
+@{
+    ViewBag.Title = "AgregarVerificacion";
+}
+
+@using (Html.BeginForm())
+{
+
+    @Html.AntiForgeryToken()
+
+    <div class="gray-bg form-horizontal">
+
+        <div class="row wrapper border-bottom white-bg page-heading">
+
+            <div class="col-lg-11 col-md-12 col-sm-12">
+
+                <h2>Detalle de la Admisión</h2>
+
+            </div>
+
+        </div>
+
+        <div class="wrapper wrapper-content animated fadeInRight">
+
+            <div class="row">
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+
+                    <div class="ibox float-e-margins">
+
+                        <div class="ibox-title">
+
+                            <h5>Nombre del Evaluado : </h5>@Html.DisplayFor(model => model.evaluado)
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+
+                    <div class="ibox float-e-margins">
+
+                        <div class="ibox-title">
+
+                            <h5>Admisión del Evaluado</h5>
+
+                        </div>
+
+                        <div class="ibox-content">
+
+                            <div class="form-group">
+
+                                @Html.TextAreaFor(model => model.cAdmisiones, new { @class = "form-control", rows = 7 })
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+
+                    <div class="ibox float-e-margins">
+
+                        <div class="ibox-title">
+
+                            <h5>Horario de Verificación</h5>
+
+                        </div>
+
+                        <div class="ibox-content">
+
+                            <div class="form-group">
+
+                                <label class="col-lg-2 col-md-2 col-sm-2 control-label">Indique el Horario </label>
+                                <div class="col-lg-10 col-md-10 col-sm-10">@Html.TextBoxFor(model => model.horario, new { @class = "form-control" })</div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+
+                    <div class="ibox float-e-margins">
+
+                        <div class="ibox-title">
+
+                            <h5>Verificación</h5>
+
+                        </div>
+
+                        <div class="ibox-content">
+
+                            <div class="form-group">
+
+                                @Html.TextAreaFor(model => model.verificacion, new { @class = "form-control", rows = 7 })
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="hr-line-dashed"></div>
+
+                @Html.HiddenFor(model => model.idh, new { id = "idh", Value = ViewBag.sIdH })
+                @if (Model.id == 0)
+                {
+                    @Html.Hidden("accion", 1);
+                    <button type="button" class="btn btn-primary" onclick="agregarVerificacion();">Guardar Verificacion</button>
+                }
+                else
+                {
+                    @Html.Hidden("accion", 2);
+                    <button type="button" class="btn btn-primary" onclick="agregarVerificacion();">Editar Verificacion</button>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+}
+
+@section scripts
+{
+    <script language="javascript">
+        function agregarVerificacion() {
+            var _id = 0;
+            var _idHistorico = $("#idh").val();
+            var _verificacion = $("#verificacion").val();
+            var _horarioVerificacion = $("#horario").val();
+            //var _accion = 1;
+            var _accion = $("#accion").val();
+
+            //alert("ID: " + _id + " | " + "IDH: " + _idHistorico + " | " + "Verificacion: " + _verificacion + " | " + "Horario: " + _horarioVerificacion + " | " + "Accion: " + _accion);
+
+            var url = "@Url.Action("AgregarActualizarVerificacion", "Admisiones")";
+            var data = { id: _id, idh: _idHistorico, verificacion: _verificacion, horario: _horarioVerificacion, accion: _accion };
+            $.post(url, data).done(function (data) {
+                if (data == "Ok") {
+
+                    //swal({
+                    //    title: "Ivestigacion Psicologica Agregada",
+                    //    text: "Satisfactoriamente",
+                    //    type: "success"
+                    //});
+
+                    location.href = '@Url.Action("Verificacion", "Message")';
+                    @*location.href = '@Url.Action("IndexEvaluacionPsi", "EvaluacionPsi")';*@
+                }
+            }).fail(manejarErrorAjax);
+        }
+    </script>
+}

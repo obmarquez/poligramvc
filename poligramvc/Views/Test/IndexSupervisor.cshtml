@@ -1,0 +1,347 @@
+﻿@model poligramvc.Models.Test
+
+@{
+    ViewBag.Title = "IndexSupervisor";
+}
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="ibox">
+
+            <div class="ibox-title">
+                <h5>Evaluación de desempeño laboral para Evaluadores. <small>Área de Poligrafía.</small></h5>
+            </div>
+
+            <div class="ibox-content">
+
+                <div class="row">
+
+                    @*Supervisores*@
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            Selección del Supervisor
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                <p class="font-bold">
+                                    Supervisor
+                                </p>
+                                @Html.DropDownListFor(model => model.evaluado, ViewData["investigador"] as SelectList, new { @id = "evaluado", @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+
+                    @*Compentencias Tecnicas*@
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            Competencias Técnicas
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-6 col-md-6 col-sm-6 control-label" style="text-align:left">ETAPA PREVIA A LA APLICACION DE EVALUACION.<br /> Corrobora antecedentes de evaluación, en su caso lee reportes de evaluaciones previas.</label>
+                                    <div class="col-lg-1 col-md-1 col-sm-1">
+                                        @Html.DropDownListFor(model => model.caltec01, new SelectList(
+                                                                    new List<object> {
+                                                                        new { value = "1", text = "1" },
+                                                                        new { value = "2", text = "2" },
+                                                                        new { value = "3", text = "3" },
+                                                                        new { value = "4", text = "4" },
+                                                                        new { value = "5", text = "5" }
+                                                                    }, "value", "text", 0), new { @id = "caltec01", @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-5">
+                                        @Html.TextAreaFor(model => model.observatec01, new { @class = "form-control", @id = "observatec01", rows = 4 })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-6 col-md-6 col-sm-6 control-label" style="text-align:left">PRETEST.<br /> Establece rapport, revisa datos generales (identifca preguntas comparativas), tiene un sensibilización productiva, plantea una explicación clara del funcionamiento del polígrafo, realiza una adecuada revisión de antecedentes, así como una aplicación de la prueba de ajuste con una posterior retroalimentación productiva para el exámen.</label>
+                                    <div class="col-lg-1 col-md-1 col-sm-1">
+                                        @Html.DropDownListFor(model => model.caltec02, new SelectList(
+                                                                    new List<object> {
+                                                                        new { value = "1", text = "1" },
+                                                                        new { value = "2", text = "2" },
+                                                                        new { value = "3", text = "3" },
+                                                                        new { value = "4", text = "4" },
+                                                                        new { value = "5", text = "5" }
+                                                                    }, "value", "text", 0), new { @id = "caltec02", @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-5">
+                                        @Html.TextAreaFor(model => model.observatec02, new { @class = "form-control", @id = "observatec02", rows = 4 })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-6 col-md-6 col-sm-6 control-label" style="text-align:left">ENTREVISTA.<br /> Realiza preguntas acordes abiertas con el objetivo claro de obtener información, los cierres de área los ejemplifica y adapta a la capacidad de entendimiento de cada evaluado, replantea la pregunta cuando así se requiere, realiza una adecuada introducción de preguntas comparativas, las desarrolla de manera convincente y respetuosa.</label>
+                                    <div class="col-lg-1 col-md-1 col-sm-1">
+                                        @Html.DropDownListFor(model => model.caltec03, new SelectList(
+                                                                    new List<object> {
+                                                                        new { value = "1", text = "1" },
+                                                                        new { value = "2", text = "2" },
+                                                                        new { value = "3", text = "3" },
+                                                                        new { value = "4", text = "4" },
+                                                                        new { value = "5", text = "5" }
+                                                                    }, "value", "text", 0), new { @id = "caltec03", @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-5">
+                                        @Html.TextAreaFor(model => model.observatec03, new { @class = "form-control", @id = "observatec03", rows = 4 })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-6 col-md-6 col-sm-6 control-label" style="text-align:left">FORMULACIÓN DE PREGUNTAS.<br /> Pondera las áreas de riesgo del evaluado, verifica lo que el evaluado en cada pregunta, en semántica respeta la longitud equitativa de ambos tipos de pregunta, respeta el orden correcto de revisión de acuerdo a la técnica empleada.</label>
+                                    <div class="col-lg-1 col-md-1 col-sm-1">
+                                        @Html.DropDownListFor(model => model.caltec04, new SelectList(
+                                                                    new List<object> {
+                                                                        new { value = "1", text = "1" },
+                                                                        new { value = "2", text = "2" },
+                                                                        new { value = "3", text = "3" },
+                                                                        new { value = "4", text = "4" },
+                                                                        new { value = "5", text = "5" }
+                                                                    }, "value", "text", 0), new { @id = "caltec04", @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-5">
+                                        @Html.TextAreaFor(model => model.observatec04, new { @class = "form-control", @id = "observatec04", rows = 4 })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-6 col-md-6 col-sm-6 control-label" style="text-align:left">IN TEST.<br /> Da instrucciones claras y precisas, sus registros están centrados y tienen sensibilidad suficiente para poder observarlos claramente, realiza anotaciones en los gráficos ( artefactos, instrucciones) verifica secuencias de preguntas para cada gráfico y obtiene registros estables.</label>
+                                    <div class="col-lg-1 col-md-1 col-sm-1">
+                                        @Html.DropDownListFor(model => model.caltec05, new SelectList(
+                                                                    new List<object> {
+                                                                        new { value = "1", text = "1" },
+                                                                        new { value = "2", text = "2" },
+                                                                        new { value = "3", text = "3" },
+                                                                        new { value = "4", text = "4" },
+                                                                        new { value = "5", text = "5" }
+                                                                    }, "value", "text", 0), new { @id = "caltec05", @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-5">
+                                        @Html.TextAreaFor(model => model.observatec05, new { @class = "form-control", @id = "observatec05", rows = 4 })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-6 col-md-6 col-sm-6 control-label" style="text-align:left">POSTEST.<br /> Pondera si el evaluador obtuvo información, en segundo término calificar si utilizó una confrontación positiva, desarrolló temas, superó las objeciones, utilizó la justificación, minimización, convenció al evaluado y le dió una razón para otorgar la admisión.</label>
+                                    <div class="col-lg-1 col-md-1 col-sm-1">
+                                        @Html.DropDownListFor(model => model.caltec06, new SelectList(
+                                                                    new List<object> {
+                                                                        new { value = "1", text = "1" },
+                                                                        new { value = "2", text = "2" },
+                                                                        new { value = "3", text = "3" },
+                                                                        new { value = "4", text = "4" },
+                                                                        new { value = "5", text = "5" }
+                                                                    }, "value", "text", 0), new { @id = "caltec06", @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-5">
+                                        @Html.TextAreaFor(model => model.observatec06, new { @class = "form-control", @id = "observatec06", rows = 4 })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-6 col-md-6 col-sm-6 control-label" style="text-align:left">ELABORACIÓN Y ENTREGA DE REPORTE DE EVALUACION.<br /> Verifica que sus reportes tengan una redacción clara, concreta y clasificada, con la propuesta de un resultado apegado a criterios de evaluación. Verifica que al entregar sus expedientes estos tengan un orden.</label>
+                                    <div class="col-lg-1 col-md-1 col-sm-1">
+                                        @Html.DropDownListFor(model => model.caltec07, new SelectList(
+                                                                    new List<object> {
+                                                                        new { value = "1", text = "1" },
+                                                                        new { value = "2", text = "2" },
+                                                                        new { value = "3", text = "3" },
+                                                                        new { value = "4", text = "4" },
+                                                                        new { value = "5", text = "5" }
+                                                                    }, "value", "text", 0), new { @id = "caltec07", @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-5">
+                                        @Html.TextAreaFor(model => model.observatec07, new { @class = "form-control", @id = "observatec07", rows = 4 })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    @*Competencias conductuales*@
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            Competencias Conductuales
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-6 col-md-6 col-sm-6 control-label" style="text-align:left">CUALIDADES.<br /> Capacidad para seguir instrucciones, ejecuta las tareas con rápidez y de manera adecuada, se integra al trabajo en equipo, tiene capacidad de análisis, es ordenado en su trabajo, aprovecha adecuadamente el equipo y los recursos.</label>
+                                    <div class="col-lg-1 col-md-1 col-sm-1">
+                                        @Html.DropDownListFor(model => model.calcon01, new SelectList(
+                                                                    new List<object> {
+                                                                        new { value = "1", text = "1" },
+                                                                        new { value = "2", text = "2" },
+                                                                        new { value = "3", text = "3" },
+                                                                        new { value = "4", text = "4" },
+                                                                        new { value = "5", text = "5" }
+                                                                    }, "value", "text", 0), new { @id = "calcon01", @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-5">
+                                        @Html.TextAreaFor(model => model.observacon01, new { @class = "form-control", @id = "observacon01", rows = 4 })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-6 col-md-6 col-sm-6 control-label" style="text-align:left">HABILIDADES DE RELACIONES HUMANAS.<br /> Dirige sus trabajo al logro de objetivos, detecta las necesidades que se requieren de su puesto y la cubre, escucha de forma adecuada las indicaciones o sugerencias a su trabajo.</label>
+                                    <div class="col-lg-1 col-md-1 col-sm-1">
+                                        @Html.DropDownListFor(model => model.calcon02, new SelectList(
+                                                                    new List<object> {
+                                                                        new { value = "1", text = "1" },
+                                                                        new { value = "2", text = "2" },
+                                                                        new { value = "3", text = "3" },
+                                                                        new { value = "4", text = "4" },
+                                                                        new { value = "5", text = "5" }
+                                                                    }, "value", "text", 0), new { @id = "calcon02", @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-5">
+                                        @Html.TextAreaFor(model => model.observacon02, new { @class = "form-control", @id = "observacon02", rows = 4 })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-6 col-md-6 col-sm-6 control-label" style="text-align:left">HABILIDADES INTRAPERSONALES.<br /> Cumple con el horario establecido de llegada a su oficina, así como el inicio de las evaluaciones, muestra una actitud reservada y prudente para actuar con juicio en el manejo de datos o situaciones que acontecen en su área de trabajo, respeta los procedimientos, a sus compañeros y sus suplentes. Tiene la habilidad para cumplir con el trabajo bajo presión en forma eficiente, sin mostrarse ansioso o agresivo. Muestra iniciativa al proponer soluciones o mejoras.</label>
+                                    <div class="col-lg-1 col-md-1 col-sm-1">
+                                        @Html.DropDownListFor(model => model.calcon03, new SelectList(
+                                                                    new List<object> {
+                                                                        new { value = "1", text = "1" },
+                                                                        new { value = "2", text = "2" },
+                                                                        new { value = "3", text = "3" },
+                                                                        new { value = "4", text = "4" },
+                                                                        new { value = "5", text = "5" }
+                                                                    }, "value", "text", 0), new { @id = "calcon03", @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-5">
+                                        @Html.TextAreaFor(model => model.observacon03, new { @class = "form-control", @id = "observacon03", rows = 4 })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="row">
+
+                <div class="hr-line-dashed"></div>
+
+                <button type="button" class="btn btn-success" onclick="guardaTestEval();">Guardar Test</button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script language="javascript">
+
+        function guardaTestEval() {
+            var _evaluado = $("#evaluado").val();
+            var _caltec01 = $("#caltec01").val();
+            var _observatec01 = $("#observatec01").val();
+            var _caltec02 = $("#caltec02").val();
+            var _observatec02 = $("#observatec02").val();
+            var _caltec03 = $("#caltec03").val();
+            var _observatec03 = $("#observatec03").val();
+            var _caltec04 = $("#caltec04").val();
+            var _observatec04 = $("#observatec04").val();
+            var _caltec05 = $("#caltec05").val();
+            var _observatec05 = $("#observatec05").val();
+            var _caltec06 = $("#caltec06").val();
+            var _observatec06 = $("#observatec06").val();
+            var _caltec07 = $("#caltec07").val();
+            var _observatec07 = $("#observatec07").val();
+            var _calcon01 = $("#calcon01").val();
+            var _observacon01 = $("#observacon01").val();
+            var _calcon02 = $("#calcon02").val();
+            var _observacon02 = $("#observacon02").val();
+            var _calcon03 = $("#calcon03").val();
+            var _observacon03 = $("#observacon03").val();
+
+            //alert("Evaluado: " + _evaluado + " | Calificacion 1: " + _caltec01 + " | Observactec 1: " + _observatec01 + " | Calificacion 2: " + _caltec02 + " | Observaciontec 2: " + _observatec02 + " | Calificacion 3: " + _caltec03 + " | Observaciontec 3: " + _observatec03 + " | Calificacion 4: " + _caltec04 + " | Observatec 4: " + _observatec04 + " | Calcon 1: " + _calcon01 + " | ObsCon 1: " + _observacon01 + " | Calcon 2: " + _calcon02 + " | ObsCon 2: " + _observacon02 + " | Calcon 3: " + _calcon03 + " | ObsCon 3: " + _observacon03);
+
+            var url = "@Url.Action("jsAgregaEvaluacionDesempeno", "Test")";
+            var data = { evaluado: _evaluado, caltec01: _caltec01, caltec02: _caltec02, caltec03: _caltec03, caltec04: _caltec04, caltec05: _caltec05, caltec06: _caltec06, caltec07: _caltec07, observatec01: _observatec01, observatec02: _observatec02, observatec03: _observatec03, observatec04: _observatec04, observatec05: _observatec05, observatec06: _observatec06, observatec07: _observatec07, calcon01: _calcon01, calcon02: _calcon02, calcon03: _calcon03, observacon01: _observacon01, observacon02: _observacon02, observacon03: _observacon03, accion: 1 };
+
+            $.post(url, data).done(function (data) {
+                if (data == "Ok") {
+
+                    //swal({
+                    //    title: "Ivestigacion Psicologica Agregada",
+                    //    text: "Satisfactoriamente",
+                    //    type: "success"
+                    //});
+
+                    location.href = '@Url.Action("Desempeno", "Message")';
+                    @*location.href = '@Url.Action("IndexEvaluacionPsi", "EvaluacionPsi")';*@
+                }
+            }).fail(manejarErrorAjax);
+        }
+
+        function manejarErrorAjax(err) {
+            console.log(err.responseText);
+        }
+
+    </script>
+}
