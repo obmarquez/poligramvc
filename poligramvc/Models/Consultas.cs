@@ -239,6 +239,16 @@ namespace poligramvc.Models
             return listaTotalDetalle;
         }
 
+        public static List<Consultas> getDetalleTotalizado(int opcion, string idpol, string fecha01, string fecha02, int estatus)
+        {
+            List<Consultas> listaDetallada = new List<Consultas>();
+            IDbConnection cnn = BDConn.AbreConexion();
+            var returnDapper = Dapper.SqlMapper.Query<Consultas>(cnn, "sp_poligrafia_Consultas", new { @opcion = opcion, @idpol = idpol, @fecha01 = fecha01, @fecha02 = fecha02, @estatus = estatus }, commandType: CommandType.StoredProcedure);
+            BDConn.CierraConexion(cnn);
+            listaDetallada = (List<Consultas>)returnDapper;
+            return listaDetallada;
+        }
+
         public static List<Consultas> getTotalizado(string fecha01, string fecha02, string opcionTotalizado)
         {
             List<Consultas> listaTotal = new List<Consultas>();

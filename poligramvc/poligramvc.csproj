@@ -581,6 +581,8 @@
     <Content Include="Views\Message\Verificacion.cshtml" />
     <Content Include="Views\Admisiones\ConcentradoVerificacion.cshtml" />
     <Content Include="Views\Vinculo\IndexVinculoPoligrafia.cshtml" />
+    <Content Include="Views\Informes\ConcentradoEstatus.cshtml" />
+    <Content Include="Views\Informes\_informes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Impresiones\" />

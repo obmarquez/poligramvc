@@ -1,0 +1,35 @@
+﻿@model IEnumerable<poligramvc.Models.Consultas>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Evaluado</th>
+            <th>IDE</th>
+            <th>IDHP</th>
+            <th>PUESTO</th>
+            <th>DEPENDENCIA</th>
+            <th>DX</th>
+            <th>DXT</th>
+            <th>F ALTA</th>
+            <th>F POL</th>            
+            <th>SUP</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                <td>@Html.DisplayFor(modelItem => item.IdE)</td>
+                <td>@Html.DisplayFor(modelItem => item.idhp)</td>
+                <td>@Html.DisplayFor(modelItem => item.puesto)</td>
+                <td>@Html.DisplayFor(modelItem => item.dependencia)</td>
+                <td>@Html.DisplayFor(modelItem => item.Dx)</td>
+                <td>@Html.DisplayFor(modelItem => item.cDxt)</td>
+                <td>@Html.DisplayFor(modelItem => item.fecha)</td>
+                <td>@Html.DisplayFor(modelItem => item.fechapol)</td>
+                <td>@Html.DisplayFor(modelItem => item.idpol)</td>
+            </tr>
+        }
+    </tbody>
+</table>

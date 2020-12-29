@@ -74,5 +74,33 @@ namespace poligramvc.Controllers
             }
             
         }
+
+        [FiltroPermisos]
+        public ActionResult ConcentradoEstatus(string fecha01 = "", string fecha02 = "") //Cat_Controlador_Acciones : XX
+        {
+            if(Session["Id_userPol"] != null)
+            {
+                if (fecha01 != "" && fecha02 != "")
+                {
+                    ViewBag.fecha01 = fecha01;
+                    ViewBag.fecha02 = fecha02;
+
+                    return View(Consultas.getTotalizadoDetalle(fecha01, fecha02, 2).ToList());
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("acceso", "Home");
+            }
+        }
+
+        public PartialViewResult seccionDetalle(int opcion, string idpol, string fecha01, string fecha02, int estatus)
+        {
+            return PartialView("_informes", Consultas.getDetalleTotalizado(opcion, idpol, fecha01, fecha02, estatus).ToList());
+        }
     }
 }
